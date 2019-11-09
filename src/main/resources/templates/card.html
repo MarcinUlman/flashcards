@@ -1,0 +1,31 @@
+<!DOCTYPE HTML>
+<html lang="pl"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{fragments/layout.html}">
+
+<body>
+<div layout:fragment="content">
+    <div class="container">
+        <div class="row justify-content-md-center">
+            <a href="#">
+            <div class="col col-lg-2 bg-dark">
+                previous
+            </div>
+            </a>
+            <div class="col-md-auto">
+                <h1 th:text="${card.word}">word</h1><br/>
+                <h1 th:text="${card.translation}">translation</h1><br/>
+                <img th:src="${card.imageURL}" class="img-thumbnail" width="250px"><br/>
+                <span th:text="${card.description}">description</span>
+            </div>
+            <a href="#">
+            <div class="col col-lg-2 bg-dark">
+                next
+            </div>
+            </a>
+        </div>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,29 @@
+<!DOCTYPE HTML>
+<html lang="pl"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<body>
+<div th:fragment="header" class="container-fluid">
+        <ul class="navbar-nav ml-auto nav-flex-icons">
+            <li class="nav-item">
+                <a class="nav-link waves-effect waves-light">1
+                    <i class="fas fa-envelope"></i>
+                </a>
+            </li>
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink-55" data-toggle="dropdown"
+                   aria-haspopup="true" aria-expanded="false">
+                    <i class="fas fa-user"></i>
+                </a>
+                <div class="dropdown-menu dropdown-menu-lg-right dropdown-secondary"
+                     aria-labelledby="navbarDropdownMenuLink-55">
+                    <span class="dropdown-item" sec:authentication="name">Static Bob</span>
+                    <a class="dropdown-item" href="#" th:text="#{userMenu.profile}">Profile</a>
+                    <a class="dropdown-item" href="/logout" th:href="@{/logout}" th:text="#{userMenu.logout}">Logout</a>
+                </div>
+            </li>
+        </ul>
+</div>
+</body>
+</html>

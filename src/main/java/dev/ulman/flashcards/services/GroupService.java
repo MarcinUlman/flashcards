@@ -1,4 +1,4 @@
-package dev.ulman.flashcards.api;
+package dev.ulman.flashcards.services;
 
 
 import dev.ulman.flashcards.model.Card;
@@ -14,5 +14,9 @@ public interface GroupService {
     void addGroup(Card newGroup);
     void deleteGroup(int id);
     void editGroup(int id, Group incomingGroup);
+
+    List<Card> getAllCards();
+    List<Card> getRandomCards(int number);
+    List<Card> getScopedCards(int minId, int maxId);
 
 }
