@@ -29,7 +29,7 @@ public class CardController {
     public String getCard (@PathVariable("id") int id, Model model){
         Card card = cardService.getCardById(id);
         if (card == null){
-            return "redirect:error404";
+            return "redirect:errors/error-404";
         }
         model.addAttribute("card", card);
         return "card";
@@ -47,11 +47,12 @@ public class CardController {
         validator.validate(card, result);
 
         if (result.hasErrors()){
+            model.addAttribute("groups", groupService.getAllGroups());
             return "cardForm";
         }
         cardService.addCard(card);
         model.addAttribute("card", card);
-        model.addAttribute("message", "Card successfully added");
+        model.addAttribute("message", "message.successfully_added");
         return "card";
     }
 
@@ -59,11 +60,11 @@ public class CardController {
     public String deleteCard(@PathVariable("id") int id, Model model){
         Card card = cardService.getCardById(id);
         if (card == null){
-            return "redirect:error404";
+            return "redirect:errors/error-404";
         }
 
         cardService.deleteCard(id);
-        model.addAttribute("message", "Card successfully deleted");
+        model.addAttribute("message", "message.successfully_deleted");
         return "card";
     }
 
@@ -71,7 +72,7 @@ public class CardController {
     public String displayCardFormToEdit(@RequestParam(value = "CardId", required = true) int id, Model model){
         Card card = cardService.getCardById(id);
         if (card == null){
-            return "redirect:error404";
+            return "redirect:errors/error-404";
         }
         model.addAttribute(card);
         model.addAttribute("groups", groupService.getAllGroups());
@@ -87,7 +88,7 @@ public class CardController {
         cardService.updateCard(card.getId(), card);
 
         model.addAttribute("card", card);
-        model.addAttribute("message", "Cars successfully changed");
+        model.addAttribute("message", "message.successfully_changed");
         return "card";
     }
 

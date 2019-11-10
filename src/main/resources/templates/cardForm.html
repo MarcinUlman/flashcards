@@ -10,27 +10,30 @@
 <div class="container">
     <form action="#" th:action="@{/cards/addCard}" th:object="${card}" method="post">
         <div class="form-group row justify-content-center">
-            <label for="word" class="col-2 col-form-label">Word</label>
+            <label for="word" class="col-2 col-form-label" th:text="#{form.word}">Word</label>
             <div class="col-5">
                 <input id="word" name="word" placeholder="biały" type="text" th:field="*{word}" required="required" class="form-control">
-                <span style="color: red;" th:if="${#fields.hasErrors('word')}" th:errors="*{word}"></span>
             </div>
+            <div style="color: red;" th:if="${#fields.hasErrors('word')}" th:errors="*{word}">Incorrect</div>
         </div>
+
         <div class="form-group row justify-content-center">
-            <label for="translation" class="col-2 col-form-label">Translation</label>
+            <label for="translation" class="col-2 col-form-label" th:text="#{form.translation}">Translation</label>
             <div class="col-5">
                 <input id="translation" name="translation" placeholder="white" type="text" th:field="*{translation}" required="required" class="form-control">
-                <span style="color: red;" th:if="${#fields.hasErrors('translation')}" th:errors="*{translation}"></span>
+            </div>
+            <div style="color: red;" th:if="${#fields.hasErrors('translation')}" th:errors="*{translation}">Incorrect
             </div>
         </div>
+
         <div class="form-group row justify-content-center">
-            <label for="description" class="col-2 col-form-label">Description</label>
+            <label for="description" class="col-2 col-form-label" th:text="#{form.description}">Description</label>
             <div class="col-5">
                 <textarea id="description" name="description" cols="40" rows="2" th:field="*{description}" class="form-control"></textarea>
             </div>
         </div>
         <div class="form-group row justify-content-center">
-            <label for="imageURL" class="col-2 col-form-label">Image URL</label>
+            <label for="imageURL" class="col-2 col-form-label" th:text="#{form.imageURL}">Image URL</label>
             <div class="col-5">
                 <div class="input-group">
                     <div class="input-group-prepend">
@@ -40,20 +43,22 @@
                     </div>
                     <input id="imageURL" name="imageURL" placeholder="https://www.some-page.com/white.jpg" type="text" th:field="*{imageURL}" class="form-control">
                 </div>
+                <div style="color: red;" th:if="${#fields.hasErrors('imageURL')}" th:errors="*{imageURL}">Incorrect</div>
             </div>
         </div>
         <div class="form-group row justify-content-center">
-            <label for="group" class="col-2 col-form-label">Group</label>
+            <label for="group" class="col-2 col-form-label" th:text="#{form.group}">Group</label>
             <div class="col-5">
                 <select id="group" name="group" th:field="*{group}" class="custom-select" required="required">
                     <option value="rabbit" th:each="group : ${groups}" th:value="${group.name}" th:text="${group.name}">Rabbit</option>
                 </select>
             </div>
+            <div style="color: red;" th:if="${#fields.hasErrors('group')}" th:errors="*{group}">Incorrect</div>
         </div>
         <div class="form-group row justify-content-center">
             <div class="offset-3 col-9">
-                <button name="submit" type="submit" class="btn btn-primary">Submit</button>
-                <button name="reset" type="reset" class="btn btn-primary">Clear</button>
+                <button name="submit" type="submit" class="btn btn-primary" th:text="#{form.button.submit}">Submit</button>
+                <button name="reset" type="reset" class="btn btn-primary" th:text="#{form.button.reset}">Clear</button>
             </div>
         </div>
     </form>

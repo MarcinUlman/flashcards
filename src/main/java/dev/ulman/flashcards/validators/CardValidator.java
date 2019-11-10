@@ -22,18 +22,19 @@ public class CardValidator implements Validator {
     @Override
     public void validate(Object o, Errors errors) {
 
-        ValidationUtils.rejectIfEmpty(errors, "word", "Word can't be empty");
-        ValidationUtils.rejectIfEmpty(errors, "translation", "Translation can't be empty");
+        ValidationUtils.rejectIfEmpty(errors, "word", "form.error.word");
+        ValidationUtils.rejectIfEmpty(errors, "translation", "form.error.translation");
+        ValidationUtils.rejectIfEmpty(errors, "group", "form.error.group");
 
         Card card = (Card) o;
         String url = card.getImageURL();
         if(url != null && url.length() > 0){
             UrlValidator urlValidator = new UrlValidator();
             if (!urlValidator.isValid(url)){
-                errors.rejectValue("imageURL", "This is not a url");
+                errors.rejectValue("imageURL", "form.error.url");
             } else {
                 if (isImage(getExtension(url))){
-                    errors.rejectValue("imageURL", "This is forbidden file format");
+                    errors.rejectValue("imageURL", "form.error.format");
                 }
             }
         }
