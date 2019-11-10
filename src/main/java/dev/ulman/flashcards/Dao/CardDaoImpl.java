@@ -1,63 +1,87 @@
 package dev.ulman.flashcards.Dao;
 
 import dev.ulman.flashcards.model.Card;
-import dev.ulman.flashcards.model.Group;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import java.util.HashSet;
-import java.util.Set;
+import javax.persistence.EntityManagerFactory;
 
 @Repository
 public class CardDaoImpl implements CardDao {
 
-    private Set<Card> cardSet;
+    private final SessionFactory sessionFactory;
 
-    public CardDaoImpl() {
-        Group group = new Group("kolory");
-        group.setId(1);
+    @Autowired
+    public CardDaoImpl(EntityManagerFactory factory){
+        if(factory.unwrap(SessionFactory.class) == null)
+            throw new NullPointerException("factory is not a hibernate factory");
 
-        Card card1 = new Card("biały", "white", "kolor biały",
-                "https://images.obi.pl/product/PL/1152x744/217821_2.jpg",
-                group);
-        card1.setId(1);
-        Card card2 = new Card("czarny", "black", "kolor czarny",
-                "https://wszystkiesymbole.pl/wp-content/uploads/2018/06/kolor-czarny.jpg",
-                group);
-        card2.setId(2);
-        Card card3 = new Card("niebieski", "blue", "kolor niebieski",
-                "https://www.google.com/https://taniareklama.pl/environment/cache/images/500_500_productGfx_b7c3dd37fa5f85e3678e9c8e330f0b03.jpg",
-                group);
-        card3.setId(3);
-
-        cardSet = new HashSet<>();
-
-        cardSet.add(card1);
-        cardSet.add(card2);
-        cardSet.add(card3);
+        sessionFactory =  factory.unwrap(SessionFactory.class);
     }
 
     @Override
     public Card getCardById(int id) {
-        return cardSet.stream()
-                .filter(c -> c.getId() == id)
-                .findFirst().get();
+        Card card = null;
+        Transaction transaction = null;
+        try(Session session = sessionFactory.openSession()){
+            transaction = session.beginTransaction();
+
+            card=session.get(Card.class, id);
+
+            transaction.commit();
+        } catch (Exception e) {
+            e.printStackTrace();
+            if (transaction != null) transaction.rollback();
+        }
+        return card;
     }
 
     @Override
     public void addCard(Card newCard) {
-    cardSet.add(newCard);
+        Transaction transaction = null;
+        try (Session session = sessionFactory.openSession()){
+            transaction = session.beginTransaction();
+            session.save(newCard);
+            transaction.commit();
+        } catch (Exception e){
+            e.printStackTrace();
+            if(transaction != null) transaction.rollback();
+        }
     }
 
     @Override
     public void deleteCard(int id) {
-        cardSet.removeIf(c -> c.getId() == id);
+        Card card = getCardById(id);
+        Transaction transaction = null;
+        try (Session session = sessionFactory.openSession()){
+            session.delete(card);
+            transaction.commit();
+        } catch (Exception e){
+            e.printStackTrace();
+            if (transaction != null) transaction.rollback();
+        }
     }
 
     @Override
     public void updateCard(int id, Card incomingCard) {
-        deleteCard(id);
-        incomingCard.setId(id);
-        addCard(incomingCard);
+        Card card = getCardById(id);
+        card.setDescription(incomingCard.getDescription());
+        card.setGroup(incomingCard.getGroup());
+        card.setImageURL(incomingCard.getImageURL());
+        card.setWord(incomingCard.getWord());
+        card.setTranslation(incomingCard.getTranslation());
 
+        Transaction transaction = null;
+        try (Session session = sessionFactory.openSession()){
+            transaction = session.beginTransaction();
+            session.update(card);
+            transaction.commit();
+        } catch (Exception e) {
+            e.printStackTrace();
+            if (transaction != null) transaction.rollback();
+        }
     }
 }

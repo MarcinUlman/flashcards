@@ -16,7 +16,9 @@
             <div class="col-md-auto">
                 <h1 th:text="${card.word}">word</h1><br/>
                 <h1 th:text="${card.translation}">translation</h1><br/>
-                <img th:src="${card.imageURL}" class="img-thumbnail" width="250px"><br/>
+                <div th:if="${card.imageURL != ''}">
+                    <img  th:src="${card.imageURL}" class="img-thumbnail" width="250px"><br/>
+                </div>
                 <span th:text="${card.description}">description</span>
             </div>
             <a href="#">

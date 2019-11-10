@@ -1,14 +1,22 @@
 package dev.ulman.flashcards.model;
 
+import javax.persistence.*;
 
+@Entity
+@Table (name = "Cards")
 public class Card {
 
+    @Id
+    @GeneratedValue (strategy = GenerationType.IDENTITY)
+    @Column (name = "CardId")
     private int id;
     private String word;
     private String translation;
     private String description;
     private String imageURL;
 
+    @ManyToOne
+    @JoinColumn (name = "GroupId")
     private Group group;
 
     public Card(String word, String translation, String description, String imageURL, Group group) {

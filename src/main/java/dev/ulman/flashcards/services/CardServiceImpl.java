@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class CardServiceImpl implements CardService {
 
-    private CardDao cardDao;
+    private final CardDao cardDao;
 
     @Autowired
     public CardServiceImpl(CardDao cardDao) {
