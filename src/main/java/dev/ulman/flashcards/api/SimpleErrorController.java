@@ -26,6 +26,8 @@ public class SimpleErrorController implements ErrorController {
                 return "errors/error-403";
             else if (statusCode == HttpStatus.INTERNAL_SERVER_ERROR.value())
                 return "errors/error-500";
+            else if (statusCode == HttpStatus.INSUFFICIENT_STORAGE.value())
+                return "errors/error-507";
         }
         return "errors/error";
     }

@@ -21,17 +21,17 @@ public class CardServiceImpl implements CardService {
     }
 
     @Override
-    public void addCard(Card newCard) {
-        cardDao.addCard(newCard);
+    public boolean addCard(Card newCard) {
+        return cardDao.addCard(newCard);
     }
 
     @Override
-    public void deleteCard(int id) {
-        cardDao.deleteCard(id);
+    public boolean deleteCard(int id) {
+        return cardDao.deleteCard(id);
     }
 
     @Override
-    public void updateCard(int id, Card incomingCard) {
-        cardDao.updateCard(id, incomingCard);
+    public boolean updateCard(int id, Card incomingCard) {
+        return cardDao.updateCard(id, incomingCard);
     }
 }

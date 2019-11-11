@@ -10,7 +10,7 @@ import org.springframework.validation.Validator;
 @Component
 public class CardValidator implements Validator {
 
-    final int MAE_EXTENSION_LENGTH = 5;
+    final int MAX_EXTENSION_LENGTH = 5;
     final String[] POSSIBLE_EXTENSIONS = {".apng", ".bmp", ".gif", ".ico", ".cur", ".jpg", ".jpeg", ".jfif", ".pjpeg", ".pjp",
     ".png", ".svg", ".tif", ".tiff", ".webp"};
 
@@ -33,7 +33,7 @@ public class CardValidator implements Validator {
             if (!urlValidator.isValid(url)){
                 errors.rejectValue("imageURL", "form.error.url");
             } else {
-                if (isImage(getExtension(url))){
+                if (!isImage(getExtension(url))){
                     errors.rejectValue("imageURL", "form.error.format");
                 }
             }
@@ -41,8 +41,8 @@ public class CardValidator implements Validator {
     }
 
     private String getExtension(String url){
-        String extension = url.substring(url.indexOf('.'));
-        if (MAE_EXTENSION_LENGTH > extension.length()){
+        String extension = url.substring(url.lastIndexOf('.'));
+        if (MAX_EXTENSION_LENGTH > extension.length()){
             return extension;
         }
         return "";

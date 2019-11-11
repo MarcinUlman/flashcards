@@ -50,26 +50,32 @@ public class CardController {
             model.addAttribute("groups", groupService.getAllGroups());
             return "cardForm";
         }
-        cardService.addCard(card);
-        model.addAttribute("card", card);
-        model.addAttribute("message", "message.successfully_added");
-        return "card";
+
+
+        if (cardService.addCard(card)) {
+            model.addAttribute("card", card);
+            model.addAttribute("message", "message.successfully_added");
+            return "card";
+        }
+        return "redirect:errors/error-507";
     }
 
-    @DeleteMapping("{id}")
+    @GetMapping("delete/{id}")
     public String deleteCard(@PathVariable("id") int id, Model model){
         Card card = cardService.getCardById(id);
         if (card == null){
             return "redirect:errors/error-404";
         }
 
-        cardService.deleteCard(id);
-        model.addAttribute("message", "message.successfully_deleted");
-        return "card";
+        if (cardService.deleteCard(id)) {
+            model.addAttribute("message", "message.successfully_deleted");
+            return "index";
+        }
+        return "redirect:errors/error-507";
     }
 
-    @GetMapping("editCard")
-    public String displayCardFormToEdit(@RequestParam(value = "CardId", required = true) int id, Model model){
+    @GetMapping("edit/{id}")
+    public String displayCardFormToEdit(@PathVariable("id") int id, Model model){
         Card card = cardService.getCardById(id);
         if (card == null){
             return "redirect:errors/error-404";
@@ -78,19 +84,20 @@ public class CardController {
         model.addAttribute("groups", groupService.getAllGroups());
         return "cardForm";
     }
-    @PostMapping("editCard")
+
+    @PostMapping("edit")
     public String editCard(@ModelAttribute Card card, Model model, BindingResult result){
         validator.validate(card, result);
         if (result.hasErrors()){
+            model.addAttribute("groups", groupService.getAllGroups());
             return "cardForm";
         }
 
-        cardService.updateCard(card.getId(), card);
-
-        model.addAttribute("card", card);
-        model.addAttribute("message", "message.successfully_changed");
-        return "card";
+        if (cardService.updateCard(card.getId(), card)) {
+            model.addAttribute("card", card);
+            model.addAttribute("message", "message.successfully_changed");
+            return "card";
+        }
+        return "redirect:errors/error-507";
     }
-
-
 }
