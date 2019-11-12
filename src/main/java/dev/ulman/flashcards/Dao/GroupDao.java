@@ -1,12 +1,11 @@
-package dev.ulman.flashcards.services;
-
+package dev.ulman.flashcards.Dao;
 
 import dev.ulman.flashcards.model.Card;
 import dev.ulman.flashcards.model.Group;
 
 import java.util.List;
 
-public interface GroupService {
+public interface GroupDao {
 
     List<Group> getAllGroups();
     Group getGroupById(int id);
@@ -16,7 +15,4 @@ public interface GroupService {
     boolean editGroup(int id, Group incomingGroup);
 
     List<Card> getAllCards(Group group);
-    List<Card> getRandomCards(Group group, int number);
-    List<Card> getScopedCards(Group group, int minId, int maxId);
-
 }

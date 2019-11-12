@@ -1,16 +1,27 @@
 package dev.ulman.flashcards.services;
 
+import dev.ulman.flashcards.Dao.GroupDao;
 import dev.ulman.flashcards.model.Card;
 import dev.ulman.flashcards.model.Group;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
 public class GroupServiceImpl implements GroupService {
+
+    private final GroupDao groupDao;
+
+    @Autowired
+    public GroupServiceImpl(GroupDao groupDao) {
+        this.groupDao = groupDao;
+    }
+
+
     @Override
     public List<Group> getAllGroups() {
-        return null;
+        return groupDao.getAllGroups();
     }
 
     @Override
@@ -25,32 +36,32 @@ public class GroupServiceImpl implements GroupService {
 
     @Override
 
-    public void addGroup(Card newGroup) {
-
+    public boolean addGroup(Group newGroup) {
+        return groupDao.addGroup(newGroup);
     }
 
     @Override
-    public void deleteGroup(int id) {
-
+    public boolean deleteGroup(int id) {
+        return groupDao.deleteGroup(id);
     }
 
     @Override
-    public void editGroup(int id, Group incomingGroup) {
-
+    public boolean editGroup(int id, Group incomingGroup) {
+       return groupDao.editGroup(id, incomingGroup);
     }
 
     @Override
-    public List<Card> getAllCards() {
+    public List<Card> getAllCards(Group group) {
         return null;
     }
 
     @Override
-    public List<Card> getRandomCards(int number) {
+    public List<Card> getRandomCards(Group group, int number) {
         return null;
     }
 
     @Override
-    public List<Card> getScopedCards(int minId, int maxId) {
+    public List<Card> getScopedCards(Group group, int minId, int maxId) {
         return null;
     }
 }
