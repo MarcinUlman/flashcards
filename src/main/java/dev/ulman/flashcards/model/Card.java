@@ -1,6 +1,7 @@
 package dev.ulman.flashcards.model;
 
 import javax.persistence.*;
+import java.util.Objects;
 
 @Entity
 @Table (name = "Cards")
@@ -76,5 +77,22 @@ public class Card {
 
     public void setGroup(Group group) {
         this.group = group;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Card card = (Card) o;
+        return word.equals(card.word) &&
+                translation.equals(card.translation) &&
+                Objects.equals(description, card.description) &&
+                Objects.equals(imageURL, card.imageURL) &&
+                group.equals(card.group);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(word, translation, description, imageURL, group);
     }
 }

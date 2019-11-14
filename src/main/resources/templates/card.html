@@ -3,17 +3,42 @@
       xmlns="http://www.w3.org/1999/xhtml"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{fragments/layout.html}">
+<head>
 
+    <style>
+        .alert {
+            padding: 20px;
+            background-color: #f44336;
+            color: white;
+        }
+
+        .closebtn {
+            margin-left: 15px;
+            color: white;
+            font-weight: bold;
+            float: right;
+            font-size: 22px;
+            line-height: 20px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .closebtn:hover {
+            color: black;
+        }
+    </style>
+</head>
 <body>
 <div layout:fragment="content">
+
+    <div class="alert">
+        <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
+        <strong>Danger!</strong> Indicates a dangerous or potentially negative action.
+    </div>
+
     <div class="container">
         <div class="row justify-content-md-center">
-            <a href="#">
-            <div class="col col-lg-2 bg-dark">
-                previous
-            </div>
-            </a>
-            <div class="col-md-auto">
+            <div class="col-lg-8">
                 <h1 th:text="${card.word}">word</h1><br/>
                 <h1 th:text="${card.translation}">translation</h1><br/>
                 <div th:if="${card.imageURL != ''}">
@@ -21,11 +46,6 @@
                 </div>
                 <span th:text="${card.description}">description</span>
             </div>
-            <a href="#">
-            <div class="col col-lg-2 bg-dark">
-                next
-            </div>
-            </a>
         </div>
         <div class="row justify-content-md-center">
             <div><a href="#" th:href="@{|/cards/edit/${card.id}|}"><i class="fas fa-edit fa-2x"></i></a></div>
