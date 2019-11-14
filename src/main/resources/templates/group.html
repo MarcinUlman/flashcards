@@ -1,0 +1,48 @@
+<!DOCTYPE HTML>
+<html lang="pl"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{fragments/layout.html}">
+
+<body>
+<div layout:fragment="content">
+    <div class="container">
+        <div class="row justify-content-md-center">
+            <div class="col-lg-8">
+                <h1 th:text="${group.name}">Name</h1><br/>
+                <span th:text="${group.description}">Description</span>
+
+                <table class="table table-sm table-striped table-hover table-bordered">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th scope="col" class="col-2">Id</th>
+                            <th th:text="#{table.head.word}" scope="col" class="col-auto">Word</th>
+                            <th th:text="#{table.head.translation}" scope="col" class="col-auto">Translation</th>
+                            <th th:text="#{table.head.link}" scope="col" class="col-2">Links</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="card: ${cards}">
+                            <th scope="row">
+                                <span th:text="${card.id}">card id</span>
+                            </th>
+                            <td>
+                                <span th:text="${card.word}">card word</span>
+                            </td>
+                            <td>
+                                <span th:text="${card.translation}">card translation</span>
+                            </td>
+                            <td>
+                                <a th:href="@{|/cards/${card.id}|}">link</a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+</div>
+</body>
+</html>

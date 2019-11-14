@@ -2,6 +2,7 @@ package dev.ulman.flashcards.Dao;
 
 import dev.ulman.flashcards.model.Card;
 import dev.ulman.flashcards.model.Group;
+import org.hibernate.Hibernate;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
@@ -141,7 +142,7 @@ public class GroupDaoImpl implements GroupDao {
 
     @Override
     public List<Card> getAllCards(Group group) {
-        List<Card> cardList = null;
+        List cardList = null;
         Transaction transaction = null;
         try (Session session = sessionFactory.openSession()){
             transaction = session.beginTransaction();
@@ -150,7 +151,9 @@ public class GroupDaoImpl implements GroupDao {
             Root<Group> root = criteriaQuery.from(Group.class);
             criteriaQuery.where(criteriaBuilder.equal(root.get("name"), group.getName()));
             Query<Group> query = session.createQuery(criteriaQuery);
-            cardList = query.getSingleResult().getCards();
+            group = query.getSingleResult();
+            Hibernate.initialize(group.getCards());
+            cardList = group.getCards();
             transaction.commit();
         } catch (Exception e){
             e.printStackTrace();

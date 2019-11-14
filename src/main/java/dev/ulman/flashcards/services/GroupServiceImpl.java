@@ -26,16 +26,15 @@ public class GroupServiceImpl implements GroupService {
 
     @Override
     public Group getGroupById(int id) {
-        return null;
+        return groupDao.getGroupById(id);
     }
 
     @Override
     public Group getGroupByName(String groupName) {
-        return null;
+        return groupDao.getGroupByName(groupName);
     }
 
     @Override
-
     public boolean addGroup(Group newGroup) {
         return groupDao.addGroup(newGroup);
     }
@@ -52,7 +51,7 @@ public class GroupServiceImpl implements GroupService {
 
     @Override
     public List<Card> getAllCards(Group group) {
-        return null;
+        return groupDao.getAllCards(group);
     }
 
     @Override
