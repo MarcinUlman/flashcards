@@ -3,39 +3,9 @@
       xmlns="http://www.w3.org/1999/xhtml"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{fragments/layout.html}">
-<head>
 
-    <style>
-        .alert {
-            padding: 20px;
-            background-color: #f44336;
-            color: white;
-        }
-
-        .closebtn {
-            margin-left: 15px;
-            color: white;
-            font-weight: bold;
-            float: right;
-            font-size: 22px;
-            line-height: 20px;
-            cursor: pointer;
-            transition: 0.3s;
-        }
-
-        .closebtn:hover {
-            color: black;
-        }
-    </style>
-</head>
 <body>
 <div layout:fragment="content">
-
-    <div class="alert">
-        <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
-        <strong>Danger!</strong> Indicates a dangerous or potentially negative action.
-    </div>
-
     <div class="container">
         <div class="row justify-content-md-center">
             <div class="col-lg-8">

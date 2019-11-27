@@ -1,0 +1,14 @@
+<!DOCTYPE HTML>
+<html lang="pl"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+
+<body>
+<div th:fragment="message" class="container-fluid">
+        <div class="" th:classappend="${messageColor == 'ok'} ? message_ok : message_alert">
+            <span class="message_closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
+            <strong th:text="${message}">Message</strong>
+        </div>
+</div>
+</body>
+</html>

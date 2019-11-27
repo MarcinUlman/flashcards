@@ -1,6 +1,8 @@
 package dev.ulman.flashcards.Dao;
 
 import dev.ulman.flashcards.model.Card;
+import dev.ulman.flashcards.model.Group;
+import org.hibernate.Hibernate;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
@@ -45,7 +47,11 @@ public class CardDaoImpl implements CardDao {
         Transaction transaction = null;
         try (Session session = sessionFactory.openSession()){
             transaction = session.beginTransaction();
-            session.save(newCard);
+            Group group = session.get(Group.class, newCard.getGroup().getId());
+            newCard.setGroup(group);
+            Hibernate.initialize(group.getCards());
+            group.getCards().add(newCard);
+            session.saveOrUpdate(group);
             transaction.commit();
             success = true;
         } catch (Exception e){
@@ -79,12 +85,27 @@ public class CardDaoImpl implements CardDao {
         try (Session session = sessionFactory.openSession()){
             transaction = session.beginTransaction();
             Card card = session.get(Card.class, id);
-            card.setDescription(incomingCard.getDescription());
-            card.setGroup(incomingCard.getGroup());
-            card.setImageURL(incomingCard.getImageURL());
+
+            Group oldGroup = session.get(Group.class, card.getGroup().getId());
+            Hibernate.initialize(oldGroup.getCards());
+            oldGroup.getCards().remove(card);
+            session.saveOrUpdate(oldGroup);
+
             card.setWord(incomingCard.getWord());
             card.setTranslation(incomingCard.getTranslation());
-            session.update(card);
+            try {
+                card.setDescription(incomingCard.getDescription());
+                card.setImageURL(incomingCard.getImageURL());
+            } catch (NullPointerException e){
+                //do nothing this fields can be null
+            }
+
+            Group newGroup = session.get(Group.class, incomingCard.getGroup().getId());
+            Hibernate.initialize(newGroup.getCards());
+            newGroup.getCards().add(card);
+            card.setGroup(newGroup);
+            session.saveOrUpdate(newGroup);
+
             transaction.commit();
             success = true;
         } catch (Exception e) {

@@ -5,6 +5,39 @@ body {
   background-color:#888888;
 }
 
+.message_alert {
+  padding: 20px;
+  background-color: #f44336;
+  color: white;
+}
+
+.message_warning {
+    padding: 20px;
+    background-color: #ffc107;
+    color: white;
+}
+
+.message_ok {
+  padding: 20px;
+  background-color: #28a745;
+  color: white;
+}
+
+.message_closebtn {
+  margin-left: 15px;
+  color: white;
+  font-weight: bold;
+  float: right;
+  font-size: 22px;
+  line-height: 20px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.message_closebtn:hover {
+  color: black;
+}
+
 .buttonInlist{
   background-color: transparent;
   border: none;

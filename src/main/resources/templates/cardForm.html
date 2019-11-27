@@ -8,7 +8,9 @@
 <body>
 <div layout:fragment="content">
 <div class="container">
-    <form action="#" th:action="@{/cards/addCard}" th:object="${card}" method="post">
+    <form action="#" th:action="${card.word} == null ? @{/cards/addCard} : @{/cards/edit}"
+          th:object="${card}" method="post">
+        <input type="hidden" th:field="*{id}" th:value="${card.word} == null ? ${card.id} : 0">
         <div class="form-group row justify-content-center">
             <label for="word" class="col-2 col-form-label" th:text="#{form.word}">Word</label>
             <div class="col-5">
@@ -49,8 +51,9 @@
         <div class="form-group row justify-content-center">
             <label for="group" class="col-2 col-form-label" th:text="#{form.group}">Group</label>
             <div class="col-5">
-                <select id="group" name="group" th:field="*{group}" class="custom-select" required="required">
-                    <option value="rabbit" th:each="group : ${groups}" th:value="${group.name}" th:text="${group.name}">Rabbit</option>
+                <select id="group" name="group" th:field="*{group.id}" class="custom-select" required="required">
+<!--                    <option value="-1" selected>&#45;&#45;&#45;&#45;SELECT GROUP&#45;&#45;&#45;&#45;</option>-->
+                    <option th:each="group : ${groups}" th:value="${group.id}" th:text="${group.name}">Rabbit</option>
                 </select>
             </div>
             <div style="color: red;" th:if="${#fields.hasErrors('group')}" th:errors="*{group}">Incorrect</div>

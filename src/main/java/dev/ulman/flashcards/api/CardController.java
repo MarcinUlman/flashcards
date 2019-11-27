@@ -5,10 +5,13 @@ import dev.ulman.flashcards.services.CardService;
 import dev.ulman.flashcards.services.GroupService;
 import dev.ulman.flashcards.validators.CardValidator;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Locale;
 
 @Controller
 @RequestMapping("cards")
@@ -17,19 +20,21 @@ public class CardController {
     private CardService cardService;
     private CardValidator validator;
     private GroupService groupService;
+    private MessageSource messageSource;
 
     @Autowired
-    public CardController(CardService cardService, CardValidator validator, GroupService groupService) {
+    public CardController(CardService cardService, CardValidator validator, GroupService groupService, MessageSource messageSource) {
         this.cardService = cardService;
         this.validator = validator;
         this.groupService = groupService;
+        this.messageSource = messageSource;
     }
 
     @GetMapping("{id}")
     public String getCard (@PathVariable("id") int id, Model model){
         Card card = cardService.getCardById(id);
         if (card == null){
-            return "redirect:errors/error-404";
+            return "errors/error-404";
         }
         model.addAttribute("card", card);
         return "card";
@@ -43,7 +48,7 @@ public class CardController {
     }
 
     @PostMapping("addCard")
-    public String addCard(@ModelAttribute("card") Card card, Model model, BindingResult result){
+    public String addCard(@ModelAttribute("card") Card card, BindingResult result, Model model, Locale locale){
         validator.validate(card, result);
 
         if (result.hasErrors()){
@@ -54,31 +59,35 @@ public class CardController {
 
         if (cardService.addCard(card)) {
             model.addAttribute("card", card);
-            model.addAttribute("message", "message.successfully_added");
+            String message = messageSource.getMessage("message.successfully_added", null, "Message", locale);
+            model.addAttribute("message", message);
+            model.addAttribute("messageColor", "ok");
             return "card";
         }
-        return "redirect:errors/error-507";
+        return "errors/error-507";
     }
 
     @GetMapping("delete/{id}")
-    public String deleteCard(@PathVariable("id") int id, Model model){
+    public String deleteCard(@PathVariable("id") int id, Model model, Locale locale){
         Card card = cardService.getCardById(id);
         if (card == null){
             return "redirect:errors/error-404";
         }
 
         if (cardService.deleteCard(id)) {
-            model.addAttribute("message", "message.successfully_deleted");
+            String message = messageSource.getMessage("message.successfully_deleted", null, "Message", locale);
+            model.addAttribute("message", message);
+            model.addAttribute("messageColor", "alert");
             return "index";
         }
-        return "redirect:errors/error-507";
+        return "errors/error-507";
     }
 
     @GetMapping("edit/{id}")
     public String displayCardFormToEdit(@PathVariable("id") int id, Model model){
         Card card = cardService.getCardById(id);
         if (card == null){
-            return "redirect:errors/error-404";
+            return "errors/error-404";
         }
         model.addAttribute(card);
         model.addAttribute("groups", groupService.getAllGroups());
@@ -86,7 +95,7 @@ public class CardController {
     }
 
     @PostMapping("edit")
-    public String editCard(@ModelAttribute Card card, Model model, BindingResult result){
+    public String editCard(@ModelAttribute Card card, BindingResult result, Model model, Locale locale){
         validator.validate(card, result);
         if (result.hasErrors()){
             model.addAttribute("groups", groupService.getAllGroups());
@@ -95,9 +104,11 @@ public class CardController {
 
         if (cardService.updateCard(card.getId(), card)) {
             model.addAttribute("card", card);
-            model.addAttribute("message", "message.successfully_changed");
+            String message = messageSource.getMessage("message.successfully_changed", null, "Message", locale);
+            model.addAttribute("message", message);
+            model.addAttribute("messageColor", "ok");
             return "card";
         }
-        return "redirect:errors/error-507";
+        return "errors/error-507";
     }
 }

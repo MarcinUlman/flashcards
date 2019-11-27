@@ -22,6 +22,9 @@
     </header>
 
     <main>
+        <div th:if="${message} != null">
+            <div layout:insert="~{fragments/message}" class="main container">Message</div>
+        </div>
         <div layout:fragment="content" class="main container">The Static Content</div>
     </main>
 

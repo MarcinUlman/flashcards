@@ -16,7 +16,7 @@ public class Card {
     private String description;
     private String imageURL;
 
-    @ManyToOne (cascade = CascadeType.PERSIST)
+    @ManyToOne (cascade = {CascadeType.MERGE, CascadeType.PERSIST})
     @JoinColumn (name = "GroupId")
     private Group group;
 
